@@ -1,6 +1,6 @@
 # Maaite
 
-Embedded analytics platform for building dashboards utilizing the Elixir, Phoenix, LiveView and Livebook technologies.
+A proof of concept of an Embedded analytics platform for building dashboards utilizing the Elixir, Phoenix, LiveView and Livebook technologies.
 
 ## Disclaimer
 
@@ -12,13 +12,19 @@ Please, check the following references to understand the context of this project
 
 * [marimo](https://marimo.io)
 
+[GitHub](https://github.com/marimo-team/marimo) repository for the Marimo project.
+
 *[Provide more explanation about it, and their characteristics]*.
 
 * [Observable Framework](https://observablehq.com/platform/framework)
 
+[GitHub](https://github.com/observablehq/framework) repository for the Observable Framework.
+
 From the same creator of [d3js](https://d3js.org) JavaScript library for data visualization, the Obserable Framework [more].
 
 * Metabase [Embedded Analytics](https://www.metabase.com/product/embedded-analytics)
+
+It is not open sourced yet. But it is a good reference for the project.
 
 *[Provide more explanation about it, and their characteristics]*.
 
@@ -79,7 +85,7 @@ It demands more research to understand how to transform the Livebook into a `mix
 
 DuckDB, SQLite, BigQuery, Parquet Delta Lake, and others. We will provide more information about the database support in the future.
 
-### DuckDB
+### DuckDB 🦆
 
 We will utilize the DuckDB engine as the one of the main database for the platform. It is a columnar storage database that is very fast and has a SQL interface. It is possible to load data from CSV, Parquet, and other formats. See the example below:
 
@@ -97,7 +103,7 @@ It will load the data from the URL and create a table called `taxis` with the da
 
 During the development, we will learn more about [DuckDB Wasm](https://github.com/duckdb/duckdb-wasm) and about its user cases.
 
-## Running the project
+## Running the app
 
 To start your Phoenix server:
 
@@ -105,3 +111,10 @@ To start your Phoenix server:
   * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
+## Motivation
+
+I have been working on roles such as data analyst, data engineer, business intelligence developer (and some others) for a long time. I have used tools such as Tableau and Power BI. Writing SQL statements and algo some Python code on Jupyter notebook.
+But I always felt that I was missing something. Aiming to have more control over the data and the visualizations, I wanted to have a tool that could be used by data analysts and data scientists to create dashboards and reports.
+
+Since I started to learning Elixir language and the Phoenix framework, and been using it for some small projects, I am amazed by the power of the language and the framework. That's why I believe this is a great time to start this project, being able to working on the intersection of data and web development with Elixir and its ecosystem.
