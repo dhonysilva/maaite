@@ -60,7 +60,7 @@ This is a tool for data analysts, business intelligent developers and data scien
 
 This public takes advantage of the features such as window functions, CTEs, and other advanced SQL features to create their indicators.
 
-## Knwon limitations
+## Known limitations
 
 At this point we don't have Livebook as a mix depedency. It could be something like:
 
@@ -73,7 +73,7 @@ defp deps do
 end
 ```
 
-It demands more research to understand how to transoform the Livebook as a `mix deps`. Meanwhile, we will use the Livebook as the standalone application.
+It demands more research to understand how to transform the Livebook into a `mix deps`. Meanwhile, we will use the standalone Livebook application.
 
 ## Database support
 
