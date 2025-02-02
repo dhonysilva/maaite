@@ -56,7 +56,7 @@ See more examples on the [Observable Framework](https://observablehq.com/framewo
 
 ## Who will utilize this platform?
 
-This is a tool for data analysts, business intelligent developers and data scientists to create dashboards and reports.
+This is a tool for data analysts, business intelligent developers and data scientists to create dashboards and reports and also might embedded it on their applications.
 
 This public takes advantage of the features such as window functions, CTEs, and other advanced SQL features to create their indicators.
 
@@ -77,7 +77,23 @@ It demands more research to understand how to transoform the Livebook as a `mix 
 
 ## Database support
 
-DuckDB, SQLite, BigQuery, Parquet Delta Lake, and others.
+DuckDB, SQLite, BigQuery, Parquet Delta Lake, and others. We will provide more information about the database support in the future.
+
+### DuckDB
+
+We will utilize the DuckDB engine as the one of the main database for the platform. It is a columnar storage database that is very fast and has a SQL interface. It is possible to load data from CSV, Parquet, and other formats. See the example below:
+
+```sql
+create or replace table taxis as
+  from 'https://blobs.duckdb.org/data/taxi_2019_04.parquet'
+```
+
+It will load the data from the URL and create a table called `taxis` with the data from the Parquet file. It is possible to run SQL queries on this table and create visualizations.
+
+
+![Connecting to and external parquet file with DuckDB!](priv/static/images/connecting_data_with_duckdb.jpg "Parquet file")
+
+### DuckDB Wasm
 
 During the development, we will learn more about [DuckDB Wasm](https://github.com/duckdb/duckdb-wasm) and about its user cases.
 
