@@ -2,9 +2,7 @@
 
 A proof of concept of an Embedded analytics platform for building dashboards utilizing the Elixir, Phoenix, LiveView and Livebook technologies.
 
-## Disclaimer
-
-This is an ongoing projet. I am creating this document to keep track of the development process and to share the knowledge with the community. All the informations here are subject to change.
+*Disclaimer*: This is an ongoing projet. I am creating this document to keep track of the development process and to share the knowledge with the community. All the informations here are subject to change.
 
 ## References
 
@@ -21,6 +19,12 @@ Please, check the following references to understand the context of this project
 [GitHub](https://github.com/observablehq/framework) repository for the Observable Framework.
 
 From the same creator of [d3js](https://d3js.org) JavaScript library for data visualization, the Obserable Framework [more].
+
+* [Evidence](https://evidence.dev)
+
+[GitHub](https://github.com/evidence-dev/evidence)
+
+Business intelligence as code: build fast, interactive data visualizations in SQL and markdown.
 
 * Metabase [Embedded Analytics](https://www.metabase.com/product/embedded-analytics)
 
@@ -59,6 +63,27 @@ It will imedialety render the data in a table or any other kind of graphic avail
 See more examples on the [Observable Framework](https://observablehq.com/framework/sql) documentation.
 
 *[provide some more examples that expalins the use of SQL in the platform and why this is important]*
+
+We can add from basic elements like this:
+
+```html
+<details>
+  <summary>Click me</summary>
+  This text is not visible by default.
+</details>
+```
+
+To some more complex like this:
+
+```html
+<div class="card" style="max-width: 640px;">
+  <h2>It gets hotter during summer</h2>
+  <h3>And months have 28–31 days</h3>
+  ${Plot.cell(weather.slice(-365), {x: (d) => d.date.getUTCDate(), y: (d) => d.date.getUTCMonth(), fill: "temp_max", tip: true, inset: 0.5}).plot({marginTop: 0, height: 240, padding: 0})}
+</div>
+```
+
+For our purpose, we will create Custom Components that will fit the requirement of create elements for tables, graphs e other elements.
 
 ## Who will utilize this platform?
 
