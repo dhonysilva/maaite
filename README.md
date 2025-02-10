@@ -32,6 +32,11 @@ It is not open sourced yet. But it is a good reference for the project.
 
 *[Provide more explanation about it, and their characteristics]*.
 
+Others tools that might be helpfull
+
+[Cloudflare Radar](https://radar.cloudflare.com)
+
+[Cloudfrlare Radar - AI Insights](https://radar.cloudflare.com/ai-insights)
 
 ## Objectives
 
