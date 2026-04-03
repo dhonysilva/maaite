@@ -39,6 +39,7 @@ npm-debug.log
 *.db
 *.db-*
 *.sqlite
+*.parquet
 
 .elixir_ls
 .vscode

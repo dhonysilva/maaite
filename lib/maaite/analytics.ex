@@ -10,6 +10,18 @@ defmodule Maaite.Analytics do
         inserted_at      TIMESTAMP DEFAULT now()
       );
     """)
+
+    DuckLake.query!("""
+    CREATE TABLE my_ducklake.nl_train_stations AS
+        FROM 'https://blobs.duckdb.org/nl_stations.csv';
+    """)
+  end
+
+  def create_train_stations! do
+    DuckLake.query!("""
+    CREATE TABLE my_ducklake.nl_train_stations AS
+        FROM 'https://blobs.duckdb.org/nl_stations.csv';
+    """)
   end
 
   def insert_event(id, name, payload) do

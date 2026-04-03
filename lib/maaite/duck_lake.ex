@@ -8,16 +8,19 @@ defmodule Maaite.DuckLake do
   Safe to call multiple times (ATTACH is idempotent with IF NOT EXISTS).
   """
   def setup! do
+    attach_for_dux()
+    # Metadata Catalog storage
     metadata = Application.get_env(:maaite, :ducklake_metadata, "priv/ducklake/metadata.sqlite")
+    # Local File Storage
     data_path = Application.get_env(:maaite, :ducklake_data_path, "priv/ducklake/data_files/")
 
-    File.mkdir_p!(Path.dirname((metadata)))
+    File.mkdir_p!(Path.dirname(metadata))
     File.mkdir_p!(data_path)
 
     statements = [
       "INSTALL ducklake;",
       "INSTALL sqlite;",
-      "ATTACH IF NOT EXISTS 'ducklake:sqlite:#{metadata}' AS my_ducklake (DATA_PATH '#{data_path}');",
+      "ATTACH IF NOT EXISTS 'ducklake:sqlite:#{metadata}' AS my_ducklake (DATA_PATH '#{data_path}');"
     ]
 
     for sql <- statements do
@@ -47,5 +50,17 @@ defmodule Maaite.DuckLake do
       {:error, reason} ->
         {:error, reason}
     end
+  end
+
+  defp attach_for_dux do
+    conn = Dux.Connection.get_conn()
+
+    Adbc.Connection.query(conn, "INSTALL ducklake;")
+    Adbc.Connection.query(conn, "INSTALL sqlite;")
+
+    Adbc.Connection.query(conn, """
+      ATTACH IF NOT EXISTS 'ducklake:sqlite:priv/ducklake/metadata.sqlite'
+      AS my_ducklake (DATA_PATH 'priv/ducklake/data_files/');
+    """)
   end
 end

@@ -2,7 +2,7 @@
 
 A proof of concept of an Embedded analytics platform for building dashboards utilizing the Elixir, Phoenix, LiveView and Livebook technologies.
 
-*Disclaimer*: This is an ongoing projet. I am creating this document to keep track of the development process and to share the knowledge with the community. All the informations here are subject to change.
+*Disclaimer*: This is an ongoing project. I am creating this document to keep track of the development process and to share the knowledge with the community. All the informations here are subject to change.
 
 ## References
 
@@ -18,13 +18,13 @@ Please, check the following references to understand the context of this project
 
 [GitHub](https://github.com/observablehq/framework) repository for the Observable Framework.
 
-From the same creator of [d3js](https://d3js.org) JavaScript library for data visualization, the Obserable Framework [more].
+From the same creator of [d3js](https://d3js.org) JavaScript library for data visualization, the Observable Framework [more].
 
 * [Evidence](https://evidence.dev)
 
 [GitHub](https://github.com/evidence-dev/evidence)
 
-Business intelligence as code: build fast, interactive data visualizations in SQL and markdown.
+Business Intelligence as code: build fast, interactive data visualizations in SQL and markdown.
 
 * Metabase [Embedded Analytics](https://www.metabase.com/product/embedded-analytics)
 
@@ -46,7 +46,7 @@ It will be a platform to build analytics dashboards as dynamic web pages, utiliz
 
 The users will build different graphics elements and pin them to appear on the central page. When appearing on the central page, it will be possible to resize them and insert text blocks, titles, and other annotations using Markdown.
 
-They will rely on heavy utilization of SQL queries to fetch data from the database and create the indicators that will feed the visualizations. These SQL statements will be placed inside the markdown blocks.
+They will rely on heavy utilization of SQL queries to fetch data from the database and create Key Performer Indicators (KIP) that will feed the visualizations. These SQL statements will be placed inside the markdown blocks.
 
 Taking the Observable Framework as an example, loading an external data source
 
@@ -88,11 +88,11 @@ To some more complex like this:
 </div>
 ```
 
-For our purpose, we will create Custom Components that will fit the requirement of create elements for tables, graphs e other elements.
+For our purpose, we will create Custom Components that will fit the requirement of create elements for tables, graphs and other elements.
 
 ## Who will utilize this platform?
 
-This is a tool for data analysts, business intelligent developers and data scientists to create dashboards and reports and also might embedded it on their applications.
+This is a tool for data analysts, business intelligence developers and data scientists to create dashboards and reports and also might embedded it into their web applications.
 
 This public takes advantage of the features such as window functions, CTEs, and other advanced SQL features to create their indicators.
 
@@ -144,7 +144,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Motivation
 
-I have been working on roles such as data analyst, data engineer, business intelligence developer (and some others) for a long time. I have used tools such as Tableau and Power BI. Writing SQL statements and algo some Python code on Jupyter notebook.
+I have been working on roles such as data analyst, data engineer, business intelligence developer (and some others) for a long time. I have used tools such as Tableau and Power BI. Writing SQL statements and also some Python code on Jupyter notebooks.
 But I always felt that I was missing something. Aiming to have more control over the data and the visualizations, I wanted to have a tool that could be used by data analysts and data scientists to create dashboards and reports.
 
 Since I started to learning Elixir language and the Phoenix framework, and been using it for some small projects, I am amazed by the power of the language and the framework. That's why I believe this is a great time to start this project, being able to working on the intersection of data and web development with Elixir and its ecosystem.
