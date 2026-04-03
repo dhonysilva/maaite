@@ -11,8 +11,7 @@ defmodule Maaite.Application do
       MaaiteWeb.Telemetry,
       Maaite.Repo,
       {Ecto.Migrator,
-        repos: Application.fetch_env!(:maaite, :ecto_repos),
-        skip: skip_migrations?()},
+       repos: Application.fetch_env!(:maaite, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:maaite, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Maaite.PubSub},
       # Start the Finch HTTP client for sending emails
@@ -20,7 +19,19 @@ defmodule Maaite.Application do
       # Start a worker by calling: Maaite.Worker.start_link(arg)
       # {Maaite.Worker, arg},
       # Start to serve requests, typically the last entry
-      MaaiteWeb.Endpoint
+      MaaiteWeb.Endpoint,
+
+      # ADBC: DuckDB database process
+      {Adbc.Database, driver: :duckdb, process_options: [name: Maaite.DuckDB]},
+
+      # ADBC: DuckDB connection process
+      {Adbc.Connection, database: Maaite.DuckDB, process_options: [name: Maaite.DuckConn]},
+      {Task.Supervisor, name: Maaite.TaskSupervisor},
+      {Task,
+       fn ->
+         Maaite.DuckLake.setup!()
+         Maaite.Analytics.create_tables!()
+       end}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

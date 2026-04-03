@@ -7,6 +7,8 @@
 # General application configuration
 import Config
 
+config :adbc, :drivers, [:duckdb]
+
 config :maaite,
   ecto_repos: [Maaite.Repo],
   generators: [timestamp_type: :utc_datetime]
