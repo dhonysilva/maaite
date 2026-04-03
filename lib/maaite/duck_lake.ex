@@ -41,16 +41,8 @@ defmodule Maaite.DuckLake do
   @doc "Run a query and return rows as a list of maps."
   def query_maps(sql, params \\ []) do
     case Adbc.Connection.query(@conn, sql, params) do
-      {:ok, %Adbc.Result{data: columns}} ->
-        # ADBC returns columnar data — zip into row maps
-        col_names = Enum.map(columns, fn {name, _} -> name end)
-        col_values = Enum.map(columns, fn {_, vals} -> vals end)
-
-        col_values
-        |> Enum.zip_with(& &1)
-        |> Enum.map(fn row ->
-          col_names |> Enum.zip(row) |> Map.new()
-        end)
+      {:ok, result} ->
+        result |> Table.to_rows() |> Enum.to_list()
 
       {:error, reason} ->
         {:error, reason}

@@ -1,13 +1,13 @@
 defmodule Maaite.Analytics do
-	alias Maaite.DuckLake
+  alias Maaite.DuckLake
 
-	def create_tables! do
+  def create_tables! do
     DuckLake.query!("""
       CREATE TABLE IF NOT EXISTS my_ducklake.events (
         id      INTEGER,
         name    VARCHAR,
         payload JSON,
-        at      TIMESTAMP DEFAULT now()
+        inserted_at      TIMESTAMP DEFAULT now()
       );
     """)
   end
@@ -21,7 +21,7 @@ defmodule Maaite.Analytics do
 
   def recent_events(limit \\ 50) do
     DuckLake.query_maps(
-      "SELECT * FROM my_ducklake.events ORDER BY at DESC LIMIT ?;",
+      "SELECT * FROM my_ducklake.events ORDER BY inserted_at DESC LIMIT ?;",
       [limit]
     )
   end
