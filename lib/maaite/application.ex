@@ -11,8 +11,7 @@ defmodule Maaite.Application do
       MaaiteWeb.Telemetry,
       Maaite.Repo,
       {Ecto.Migrator,
-        repos: Application.fetch_env!(:maaite, :ecto_repos),
-        skip: skip_migrations?()},
+       repos: Application.fetch_env!(:maaite, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:maaite, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Maaite.PubSub},
       # Start the Finch HTTP client for sending emails
@@ -20,13 +19,23 @@ defmodule Maaite.Application do
       # Start a worker by calling: Maaite.Worker.start_link(arg)
       # {Maaite.Worker, arg},
       # Start to serve requests, typically the last entry
-      MaaiteWeb.Endpoint
+      MaaiteWeb.Endpoint,
+      {Task.Supervisor, name: Maaite.TaskSupervisor}
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Maaite.Supervisor]
-    Supervisor.start_link(children, opts)
+    {:ok, sup} = Supervisor.start_link(children, opts)
+
+    Task.Supervisor.start_child(
+      Maaite.TaskSupervisor,
+      fn ->
+        Maaite.DuckLake.setup!()
+        Maaite.Analytics.create_tables!()
+      end,
+      restart: :transient
+    )
+
+    {:ok, sup}
   end
 
   # Tell Phoenix to update the endpoint configuration
