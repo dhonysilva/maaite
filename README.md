@@ -139,15 +139,16 @@ During the last few days, I figured out Christopher Grainger is developing the D
 
 Important links:
 
-https://github.com/elixir-dux/dux
+* https://github.com/elixir-dux/dux
+* https://dux.now
+* https://hexdocs.pm/dux/getting-started.html
+* https://cigrainger.com/blog/introducing-dux/
 
-https://dux.now
+### Working with Dux sintax API
 
-https://hexdocs.pm/dux/getting-started.html
+The examples below were extract from the DuckDB's [Analyzing Railway Traffic in the Netherlands](https://duckdb.org/2024/05/31/analyzing-railway-traffic-in-the-netherlands) documentation
 
-https://cigrainger.com/blog/introducing-dux/
-
-The examples below were extract from the DuckDB's [Analyzing Railway Traffic in the Netherlands](https://duckdb.org/2024/05/31/analyzing-railway-traffic-in-the-netherlands) documentation. And they are being processed with `Dux.from_query()` function.
+#### With `Dux.from_query()` function.
 
 <details>
 
@@ -293,11 +294,11 @@ stations =
 
 </details>
 
-Examples with pure Dux functions.
+#### Examples with pure Dux functions.
 
 <details>
 
-<summary>Which are the top-3 busiest stations for each summer month?</summary>
+<summary>Which are the Busiest Station per Month</summary>
 
 Assign `services` table
 
