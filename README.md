@@ -202,8 +202,8 @@ busiest =
   Dux.from_query(
   	"""
     SELECT
-        month("Service:Date") AS month,
-        "Stop:Station name" AS station,
+        month(service_date) AS month,
+        stop_station_name AS station,
         count(*) AS num_services
     FROM my_ducklake.main.services
     GROUP BY ALL
@@ -222,8 +222,8 @@ top-3-busiest =
   	"""
     WITH services_per_month AS (
         SELECT
-            month("Service:Date") AS month,
-            "Stop:Station name" AS station,
+            month(service_date) AS month,
+            stop_station_name AS station,
             count(*) AS num_services
         FROM my_ducklake.main.services
         GROUP BY ALL
@@ -289,6 +289,61 @@ stations =
     FROM my_ducklake.main.train_stations
     LIMIT 5
     """)
+```
+
+</details>
+
+Examples with pure Dux functions.
+
+<details>
+
+<summary>Which are the top-3 busiest stations for each summer month?</summary>
+
+Assign `services` table
+
+```elixir
+services = DuckLake.table("main.services")
+```
+
+Counting the amount of Services per Station per Month
+
+```elixir
+iex(5)> per_month = (
+  services
+  |> Dux.mutate(month: month(service_date), station: stop_station_name)
+  |> Dux.group_by([:month, :station])
+  |> Dux.summarise(num_services: count(station))
+  |> Dux.sort_by(:month)
+)
+```
+
+Finding the Busiest Station per Month
+
+```elixir
+iex(6)> per_month_busiest = (
+  per_month
+  |> Dux.filter(month <= 6)
+  |> Dux.group_by(:month)
+  |> Dux.summarise(
+    station: arg_max(station, num_services),
+    num_services: max(num_services)
+  )
+  |> Dux.sort_by(:month)
+  |> Dux.to_rows()
+)
+```
+
+It produces this result:
+
+```elixir
+]
+  %{"month" => 1, "num_services" => 34760, "station" => "Utrecht Centraal"},
+  %{"month" => 2, "num_services" => 32300, "station" => "Utrecht Centraal"},
+  %{"month" => 3, "num_services" => 37386, "station" => "Utrecht Centraal"},
+  %{"month" => 4, "num_services" => 33426, "station" => "Amsterdam Centraal"},
+  %{"month" => 5, "num_services" => 35383, "station" => "Utrecht Centraal"},
+  %{"month" => 6, "num_services" => 35632, "station" => "Utrecht Centraal"}
+]
 ```
 
 </details>
