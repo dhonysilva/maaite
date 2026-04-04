@@ -12,14 +12,7 @@ defmodule Maaite.Analytics do
     """)
 
     DuckLake.query!("""
-    CREATE TABLE my_ducklake.nl_train_stations AS
-        FROM 'https://blobs.duckdb.org/nl_stations.csv';
-    """)
-  end
-
-  def create_train_stations! do
-    DuckLake.query!("""
-    CREATE TABLE my_ducklake.nl_train_stations AS
+    CREATE TABLE my_ducklake.train_stations AS
         FROM 'https://blobs.duckdb.org/nl_stations.csv';
     """)
   end

@@ -1,17 +1,12 @@
 defmodule Maaite.DuckLake do
   require Logger
 
-  @conn Maaite.DuckConn
-
   @doc """
   Run once at startup to install extensions and attach the DuckLake catalog.
   Safe to call multiple times (ATTACH is idempotent with IF NOT EXISTS).
   """
   def setup! do
-    attach_for_dux()
-    # Metadata Catalog storage
     metadata = Application.get_env(:maaite, :ducklake_metadata, "priv/ducklake/metadata.sqlite")
-    # Local File Storage
     data_path = Application.get_env(:maaite, :ducklake_data_path, "priv/ducklake/data_files/")
 
     File.mkdir_p!(Path.dirname(metadata))
@@ -24,7 +19,7 @@ defmodule Maaite.DuckLake do
     ]
 
     for sql <- statements do
-      case Adbc.Connection.query(@conn, sql) do
+      case Adbc.Connection.query(conn(), sql) do
         {:ok, _} -> :ok
         {:error, reason} -> Logger.warning("DuckLake setup warning: #{inspect(reason)}")
       end
@@ -35,7 +30,7 @@ defmodule Maaite.DuckLake do
 
   @doc "Run a query against the DuckLake catalog."
   def query!(sql, params \\ []) do
-    case Adbc.Connection.query(@conn, sql, params) do
+    case Adbc.Connection.query(conn(), sql, params) do
       {:ok, result} -> result
       {:error, reason} -> raise "DuckLake query error: #{inspect(reason)}"
     end
@@ -43,7 +38,7 @@ defmodule Maaite.DuckLake do
 
   @doc "Run a query and return rows as a list of maps."
   def query_maps(sql, params \\ []) do
-    case Adbc.Connection.query(@conn, sql, params) do
+    case Adbc.Connection.query(conn(), sql, params) do
       {:ok, result} ->
         result |> Table.to_rows() |> Enum.to_list()
 
@@ -52,15 +47,9 @@ defmodule Maaite.DuckLake do
     end
   end
 
-  defp attach_for_dux do
-    conn = Dux.Connection.get_conn()
-
-    Adbc.Connection.query(conn, "INSTALL ducklake;")
-    Adbc.Connection.query(conn, "INSTALL sqlite;")
-
-    Adbc.Connection.query(conn, """
-      ATTACH IF NOT EXISTS 'ducklake:sqlite:priv/ducklake/metadata.sqlite'
-      AS my_ducklake (DATA_PATH 'priv/ducklake/data_files/');
-    """)
+  def table(name) when is_binary(name) do
+    Dux.from_attached(:my_ducklake, name)
   end
+
+  defp conn, do: Dux.Connection.get_conn()
 end

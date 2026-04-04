@@ -20,12 +20,6 @@ defmodule Maaite.Application do
       # {Maaite.Worker, arg},
       # Start to serve requests, typically the last entry
       MaaiteWeb.Endpoint,
-
-      # ADBC: DuckDB database process
-      {Adbc.Database, driver: :duckdb, process_options: [name: Maaite.DuckDB]},
-
-      # ADBC: DuckDB connection process
-      {Adbc.Connection, database: Maaite.DuckDB, process_options: [name: Maaite.DuckConn]},
       {Task.Supervisor, name: Maaite.TaskSupervisor},
       {Task,
        fn ->
