@@ -147,7 +147,11 @@ https://hexdocs.pm/dux/getting-started.html
 
 https://cigrainger.com/blog/introducing-dux/
 
-#### Counting the amount of rows from services table:
+The examples below were extract from the DuckDB's [Analyzing Railway Traffic in the Netherlands](https://duckdb.org/2024/05/31/analyzing-railway-traffic-in-the-netherlands) documentation. And they are being processed with `Dux.from_query()` function.
+
+<details>
+
+<summary>Counting the amount of rows from services table</summary>
 
 ```elixir
 iex(9)> services = Dux.from_query("SELECT format('{:,}', count(*)) AS num_services FROM my_ducklake.main.services")
@@ -156,7 +160,12 @@ iex(10)> Dux.to_rows(services)
 [%{"num_services" => "21,239,393"}]
 ```
 
-#### The busiest Station per Month:
+</details>
+
+
+<details>
+
+<summary>The busiest Station per Month</summary>
 
 ```elixir
 iex(9)>
@@ -182,7 +191,11 @@ iex(10)> Dux.to_rows(busiest)
 ]
 ```
 
-#### The busiest Station per Month with GROUP BY ALL:
+</details>
+
+<details>
+
+<summary>The busiest Station per Month with GROUP BY ALL</summary>
 
 ```elixir
 busiest =
@@ -197,7 +210,11 @@ busiest =
     """)
 ```
 
-#### Which are the top-3 busiest stations for each summer month?
+</details>
+
+<details>
+
+<summary>Which are the top-3 busiest stations for each summer month?</summary>
 
 ```elixir
 top-3-busiest =
@@ -251,7 +268,12 @@ iex(10)> Dux.to_rows(top-3-busiest)
 ]
 ```
 
-#### List of Stations:
+</details>
+
+
+<details>
+
+<summary>List of Stations</summary>
 
 ```elixir
 stations =
@@ -268,6 +290,8 @@ stations =
     LIMIT 5
     """)
 ```
+
+</details>
 
 ## Running the app
 
