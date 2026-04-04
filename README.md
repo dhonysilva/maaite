@@ -144,7 +144,7 @@ Important links:
 * https://hexdocs.pm/dux/getting-started.html
 * https://cigrainger.com/blog/introducing-dux/
 
-### Working with Dux sintax API
+### Working with Dux syntax API
 
 The examples below were extract from the DuckDB's [Analyzing Railway Traffic in the Netherlands](https://duckdb.org/2024/05/31/analyzing-railway-traffic-in-the-netherlands) documentation
 
