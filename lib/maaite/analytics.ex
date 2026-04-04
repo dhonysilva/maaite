@@ -12,9 +12,11 @@ defmodule Maaite.Analytics do
     """)
 
     DuckLake.query!("""
-    CREATE TABLE my_ducklake.train_stations AS
-        FROM 'https://blobs.duckdb.org/nl_stations.csv';
+      CREATE TABLE IF NOT EXISTS my_ducklake.train_stations AS
+      FROM 'https://blobs.duckdb.org/nl_stations.csv';
     """)
+
+    :ok
   end
 
   def insert_event(id, name, payload) do

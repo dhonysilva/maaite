@@ -58,6 +58,8 @@ defmodule Maaite.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
+      {:adbc, "~> 0.11.0"},
+      {:table, "~> 0.1.2"},
       {:dux, "~> 0.3.0"}
     ]
   end

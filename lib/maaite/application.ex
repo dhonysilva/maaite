@@ -20,18 +20,22 @@ defmodule Maaite.Application do
       # {Maaite.Worker, arg},
       # Start to serve requests, typically the last entry
       MaaiteWeb.Endpoint,
-      {Task.Supervisor, name: Maaite.TaskSupervisor},
-      {Task,
-       fn ->
-         Maaite.DuckLake.setup!()
-         Maaite.Analytics.create_tables!()
-       end}
+      {Task.Supervisor, name: Maaite.TaskSupervisor}
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Maaite.Supervisor]
-    Supervisor.start_link(children, opts)
+    {:ok, sup} = Supervisor.start_link(children, opts)
+
+    Task.Supervisor.start_child(
+      Maaite.TaskSupervisor,
+      fn ->
+        Maaite.DuckLake.setup!()
+        Maaite.Analytics.create_tables!()
+      end,
+      restart: :transient
+    )
+
+    {:ok, sup}
   end
 
   # Tell Phoenix to update the endpoint configuration
