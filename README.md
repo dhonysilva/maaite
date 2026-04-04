@@ -133,6 +133,142 @@ It will load the data from the URL and create a table called `taxis` with the da
 
 During the development, we will learn more about [DuckDB Wasm](https://github.com/duckdb/duckdb-wasm) and about its user cases.
 
+### Dux
+
+During the last few days, I figured out Christopher Grainger is developing the Dux library. It perfect make sense to implement this project. I took some time to explore and consume these data from Railway Traffic in the Netherlands.
+
+Important links:
+
+https://github.com/elixir-dux/dux
+
+https://dux.now
+
+https://hexdocs.pm/dux/getting-started.html
+
+https://cigrainger.com/blog/introducing-dux/
+
+#### Counting the amount of rows from services table:
+
+```elixir
+iex(9)> services = Dux.from_query("SELECT format('{:,}', count(*)) AS num_services FROM my_ducklake.main.services")
+#Dux<lazy sql: SELECT format('{:,}', count(*)) AS num_…>
+iex(10)> Dux.to_rows(services)
+[%{"num_services" => "21,239,393"}]
+```
+
+#### The busiest Station per Month:
+
+```elixir
+iex(9)>
+busiest =
+  Dux.from_query(
+  	"""
+  	SELECT
+      month("Service:Date") AS month,
+      "Stop:Station name" AS station,
+      count(*) AS num_services
+    FROM my_ducklake.main.services
+    GROUP BY month, station
+    LIMIT 5
+  	""")
+
+iex(10)> Dux.to_rows(busiest)
+[
+  %{"month" => 1, "num_services" => 2338, "station" => "Kampen Zuid"},
+  %{"month" => 1, "num_services" => 22710, "station" => "Zwolle"},
+  %{"month" => 1, "num_services" => 8138, "station" => "Zaandam"},
+  %{"month" => 1, "num_services" => 5083, "station" => "Amsterdam Lelylaan"},
+  %{"month" => 1, "num_services" => 17558, "station" => "Arnhem Centraal"}
+]
+```
+
+#### The busiest Station per Month with GROUP BY ALL:
+
+```elixir
+busiest =
+  Dux.from_query(
+  	"""
+    SELECT
+        month("Service:Date") AS month,
+        "Stop:Station name" AS station,
+        count(*) AS num_services
+    FROM my_ducklake.main.services
+    GROUP BY ALL
+    """)
+```
+
+#### Which are the top-3 busiest stations for each summer month?
+
+```elixir
+top-3-busiest =
+  Dux.from_query(
+  	"""
+    WITH services_per_month AS (
+        SELECT
+            month("Service:Date") AS month,
+            "Stop:Station name" AS station,
+            count(*) AS num_services
+        FROM my_ducklake.main.services
+        GROUP BY ALL
+    )
+    SELECT month, month_name, array_agg(station) AS top3_stations
+    FROM (
+        SELECT
+            month,
+            strftime(make_date(2023, month, 1), '%B') AS month_name,
+            rank() OVER
+                (PARTITION BY month ORDER BY num_services DESC) AS rank,
+            station,
+            num_services
+        FROM services_per_month
+        WHERE month BETWEEN 6 AND 8
+    )
+    WHERE rank <= 3
+    GROUP BY ALL
+    ORDER BY month
+    """)
+  
+iex(10)> Dux.to_rows(top-3-busiest)
+[
+  %{
+    "month" => 6,
+    "month_name" => "June",
+    "top3_stations" => ["Utrecht Centraal", "Amsterdam Centraal",
+     "Schiphol Airport"]
+  },
+  %{
+    "month" => 7,
+    "month_name" => "July",
+    "top3_stations" => ["Utrecht Centraal", "Amsterdam Centraal",
+     "Schiphol Airport"]
+  },
+  %{
+    "month" => 8,
+    "month_name" => "August",
+    "top3_stations" => ["Utrecht Centraal", "Amsterdam Centraal",
+     "Amsterdam Sloterdijk"]
+  }
+]
+```
+
+#### List of Stations:
+
+```elixir
+stations =
+  Dux.from_query(
+  	"""
+    SELECT
+        id,
+        name_short,
+        name_long,
+        country,
+        printf('%.2f', geo_lat) AS latitude,
+        printf('%.2f', geo_lng) AS longitude
+    FROM my_ducklake.main.train_stations
+    LIMIT 5
+    """)
+```
+
 ## Running the app
 
 To start your Phoenix server:
