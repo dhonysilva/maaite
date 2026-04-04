@@ -16,6 +16,11 @@ defmodule Maaite.Analytics do
       FROM 'https://blobs.duckdb.org/nl_stations.csv';
     """)
 
+    DuckLake.query!("""
+      CREATE TABLE IF NOT EXISTS my_ducklake.services AS
+      FROM 'https://blobs.duckdb.org/nl-railway/services-2023.csv.gz';
+    """)
+
     :ok
   end
 
