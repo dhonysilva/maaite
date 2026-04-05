@@ -17,7 +17,7 @@ defmodule MaaiteWeb.Router do
   scope "/", MaaiteWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", CatalogLive
   end
 
   # Other scopes may use custom stacks.
